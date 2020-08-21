@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="某人">
   <meta name="keywords" content="">
-  <title>第二篇文章 - 个人博客</title>
+  <title>安裝nginx-ingress過程 - 个人博客</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -160,8 +160,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-08-20 21:14" pubdate>
-      August 20, 2020 pm
+    <time datetime="2020-08-21 18:57" pubdate>
+      August 21, 2020 pm
     </time>
   </div>
 
@@ -171,7 +171,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9 字
+      189 字
     </span>
   
 
@@ -181,7 +181,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      3
        分钟
     </span>
   
@@ -211,11 +211,36 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">第二篇文章</h1>
+            <h1 style="display: none">安裝nginx-ingress過程</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>#文章标题</p>
-<h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><p><u>123</u></p>
+              <h1 id="安装nginx-ingress过程"><a href="#安装nginx-ingress过程" class="headerlink" title="安装nginx-ingress过程"></a>安装nginx-ingress过程</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/#create-custom-resources">官方文档</a></p>
+</blockquote>
+<h3 id="3个步骤："><a href="#3个步骤：" class="headerlink" title="3个步骤："></a>3个步骤：</h3><h4 id="1-下载镜像-以及deployment文件"><a href="#1-下载镜像-以及deployment文件" class="headerlink" title="1.下载镜像 以及deployment文件"></a>1.下载镜像 以及deployment文件</h4><pre><code class="hljs powershell">docker pull nginx/nginx<span class="hljs-literal">-ingress</span>:<span class="hljs-number">1.8</span>.<span class="hljs-number">1</span>
+git  clone https://codeload.github.com/nginxinc/kubernetes<span class="hljs-literal">-ingress</span>/zip/release<span class="hljs-literal">-1</span>.<span class="hljs-number">8</span>
+<span class="hljs-built_in">cd</span>  kubernetes<span class="hljs-literal">-ingress</span>/deployments</code></pre>
+
+<h4 id="2-部署deployment"><a href="#2-部署deployment" class="headerlink" title="2.部署deployment"></a>2.部署deployment</h4><pre><code class="hljs powershell">kubectl apply <span class="hljs-operator">-f</span> common/ns<span class="hljs-operator">-and</span><span class="hljs-literal">-sa</span>.yamlkubectl apply <span class="hljs-operator">-f</span> rbac/rbac.yaml
+kubectl apply <span class="hljs-operator">-f</span> rbac/rbac.yaml
+kubectl apply <span class="hljs-operator">-f</span> common/default<span class="hljs-literal">-server</span><span class="hljs-literal">-secret</span>.yaml
+kubectl apply <span class="hljs-operator">-f</span> common/nginx<span class="hljs-literal">-config</span>.yaml
+
+<span class="hljs-comment">#如果报错，apply时加参数 --validate=false</span>
+
+kubectl apply <span class="hljs-operator">-f</span> common/vs<span class="hljs-literal">-definition</span>.yaml
+kubectl apply <span class="hljs-operator">-f</span> common/vsr<span class="hljs-literal">-definition</span>.yaml
+kubectl apply <span class="hljs-operator">-f</span> common/ts<span class="hljs-literal">-definition</span>.yaml
+kubectl apply <span class="hljs-operator">-f</span> common/policy<span class="hljs-literal">-definition</span>.yaml
+
+kubectl apply <span class="hljs-operator">-f</span> common/<span class="hljs-built_in">gc</span><span class="hljs-literal">-definition</span>.yaml
+kubectl apply <span class="hljs-operator">-f</span> common/global<span class="hljs-literal">-configuration</span>.yaml
+
+<span class="hljs-comment">#这里使用daemon-set方式创建，注意里面的image版本要与准备好的的image对应，否则会去网上pull。</span>
+kubectl apply <span class="hljs-operator">-f</span> daemon<span class="hljs-literal">-set</span>/nginx<span class="hljs-literal">-ingress</span>.yaml</code></pre>
+
+<h4 id="3-检查"><a href="#3-检查" class="headerlink" title="3.检查"></a>3.检查</h4><pre><code class="hljs powershell">kubectl get pods -<span class="hljs-literal">-namespace</span>=nginx<span class="hljs-literal">-ingress</span></code></pre>
+
 
             </div>
             <hr>
@@ -232,18 +257,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/08/21/%E5%AE%89%E8%A3%85nginx-ingress%E8%BF%87%E7%A8%8B/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">安裝nginx-ingress過程</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/08/19/My-New-Post/">
-                        <span class="hidden-mobile">My New Post</span>
+                      <a href="/2020/08/20/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%96%87%E7%AB%A0/">
+                        <span class="hidden-mobile">第二篇文章</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -382,7 +401,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "第二篇文章&nbsp;",
+        "安裝nginx-ingress過程&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

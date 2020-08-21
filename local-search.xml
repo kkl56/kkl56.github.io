@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>安裝nginx-ingress過程</title>
+    <link href="/2020/08/21/%E5%AE%89%E8%A3%85nginx-ingress%E8%BF%87%E7%A8%8B/"/>
+    <url>/2020/08/21/%E5%AE%89%E8%A3%85nginx-ingress%E8%BF%87%E7%A8%8B/</url>
+    
+    <content type="html"><![CDATA[<h1 id="安装nginx-ingress过程"><a href="#安装nginx-ingress过程" class="headerlink" title="安装nginx-ingress过程"></a>安装nginx-ingress过程</h1><blockquote><p><a href="https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/#create-custom-resources">官方文档</a></p></blockquote><h3 id="3个步骤："><a href="#3个步骤：" class="headerlink" title="3个步骤："></a>3个步骤：</h3><h4 id="1-下载镜像-以及deployment文件"><a href="#1-下载镜像-以及deployment文件" class="headerlink" title="1.下载镜像 以及deployment文件"></a>1.下载镜像 以及deployment文件</h4><pre><code class="hljs powershell">docker pull nginx/nginx<span class="hljs-literal">-ingress</span>:<span class="hljs-number">1.8</span>.<span class="hljs-number">1</span>git  clone https://codeload.github.com/nginxinc/kubernetes<span class="hljs-literal">-ingress</span>/zip/release<span class="hljs-literal">-1</span>.<span class="hljs-number">8</span><span class="hljs-built_in">cd</span>  kubernetes<span class="hljs-literal">-ingress</span>/deployments</code></pre><h4 id="2-部署deployment"><a href="#2-部署deployment" class="headerlink" title="2.部署deployment"></a>2.部署deployment</h4><pre><code class="hljs powershell">kubectl apply <span class="hljs-operator">-f</span> common/ns<span class="hljs-operator">-and</span><span class="hljs-literal">-sa</span>.yamlkubectl apply <span class="hljs-operator">-f</span> rbac/rbac.yamlkubectl apply <span class="hljs-operator">-f</span> rbac/rbac.yamlkubectl apply <span class="hljs-operator">-f</span> common/default<span class="hljs-literal">-server</span><span class="hljs-literal">-secret</span>.yamlkubectl apply <span class="hljs-operator">-f</span> common/nginx<span class="hljs-literal">-config</span>.yaml<span class="hljs-comment">#如果报错，apply时加参数 --validate=false</span>kubectl apply <span class="hljs-operator">-f</span> common/vs<span class="hljs-literal">-definition</span>.yamlkubectl apply <span class="hljs-operator">-f</span> common/vsr<span class="hljs-literal">-definition</span>.yamlkubectl apply <span class="hljs-operator">-f</span> common/ts<span class="hljs-literal">-definition</span>.yamlkubectl apply <span class="hljs-operator">-f</span> common/policy<span class="hljs-literal">-definition</span>.yamlkubectl apply <span class="hljs-operator">-f</span> common/<span class="hljs-built_in">gc</span><span class="hljs-literal">-definition</span>.yamlkubectl apply <span class="hljs-operator">-f</span> common/global<span class="hljs-literal">-configuration</span>.yaml<span class="hljs-comment">#这里使用daemon-set方式创建，注意里面的image版本要与准备好的的image对应，否则会去网上pull。</span>kubectl apply <span class="hljs-operator">-f</span> daemon<span class="hljs-literal">-set</span>/nginx<span class="hljs-literal">-ingress</span>.yaml</code></pre><h4 id="3-检查"><a href="#3-检查" class="headerlink" title="3.检查"></a>3.检查</h4><pre><code class="hljs powershell">kubectl get pods -<span class="hljs-literal">-namespace</span>=nginx<span class="hljs-literal">-ingress</span></code></pre>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>第二篇文章</title>
     <link href="/2020/08/20/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%96%87%E7%AB%A0/"/>
     <url>/2020/08/20/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%96%87%E7%AB%A0/</url>
